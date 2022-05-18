@@ -1,0 +1,41 @@
+name: build
+on: 
+- push
+
+jobs:
+  listimages:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+    - uses: actions/checkout@master
+    - id: set-matrix
+      uses: mikefarah/yq@master
+      run: |
+        printf '::set-output name=matrix::['
+        yq -o=json e .build.artifacts skaffold.yaml | tr -d '[[:space:]]'
+        printf ']\n'
+
+  build:
+    runs-on: ubuntu-latest
+    needs: listimages
+    strategy:
+      fail-fast: false
+      matrix: ${{fromJson(needs.listimages.outputs.matrix)}}
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build and push
+      uses: docker/build-push-action@v3
+      with:
+        context: ${{ matrix.context }}
+        load: true
+        tags: ${{ matrix.image }}
+
+    - uses: Azure/container-scan@v0
+      with:
+        image-name: ${{ matrix.image }}
+        severity-threshold: CRITICAL
