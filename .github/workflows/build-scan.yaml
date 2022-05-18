@@ -11,10 +11,11 @@ jobs:
     - uses: actions/checkout@master
     - id: set-matrix
       uses: mikefarah/yq@master
-      run: |
-        printf '::set-output name=matrix::['
-        yq -o=json e .build.artifacts skaffold.yaml | tr -d '[[:space:]]'
-        printf ']\n'
+      with:
+        cmd: |
+          printf '::set-output name=matrix::['
+          yq -o=json e .build.artifacts skaffold.yaml | tr -d '[[:space:]]'
+          printf ']\n'
 
   build:
     runs-on: ubuntu-latest
