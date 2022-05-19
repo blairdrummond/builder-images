@@ -15,7 +15,7 @@ jobs:
         cmd: |
           yq e .build.artifacts skaffold.yaml | sed 's/liatrio/blairdrummond/g'
 
-  build-two:
+  build:
     uses: blairdrummond/github-workflows/.github/workflows/build-scan-push.yaml@main
     needs: [listimages]
     with:
