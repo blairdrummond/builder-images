@@ -13,7 +13,7 @@ jobs:
       uses: mikefarah/yq@v4.25.1
       with:
         cmd: |
-          yq e .build.artifacts skaffold.yaml 
+          yq e .build.artifacts skaffold.yaml | sed 's/liatrio/blairdrummond/g'
 
   build-two:
     uses: blairdrummond/github-workflows/.github/workflows/build-scan-push.yaml
