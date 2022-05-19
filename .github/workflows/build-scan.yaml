@@ -6,7 +6,7 @@ jobs:
   listimages:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.get-matrix.outputs.matrix }}
+      matrix: ${{ steps.get-matrix.outputs.result }}
     steps:
     - uses: actions/checkout@master
     - id: get-matrix
