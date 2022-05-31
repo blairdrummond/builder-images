@@ -20,7 +20,7 @@ jobs:
     needs: [listimages]
     with:
       publish: ${{ github.ref == 'refs/heads/master' }}
-      repository: ghcr.io/liatrio
+      repository: ghcr.io/blairdrummond
       registry-username: ${{ github.repository_owner }}
       registry-password: ${{ secrets.GITHUB_TOKEN }}
       tag: ${{ github.ref }}
@@ -35,7 +35,7 @@ jobs:
       uses: liatrio/github-actions/git-extra@master
     - id: gitops
       uses: liatrio/github-actions/gitty-up@master
-      if: github.ref == 'refs/heads/master'
+      if: false
       with:
         url: https://github.com/liatrio/lead-environments.git
         username: ${{ github.actor }}
